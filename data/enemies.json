@@ -1,0 +1,41 @@
+{
+  "tipos": [
+    {
+      "id": "patrullero",
+      "nombre": "Patrullero",
+      "comportamiento": "patrulla",
+      "salud": 3,
+      "danoContacto": 1,
+      "velocidad": 70,
+      "etiquetas": []
+    },
+    {
+      "id": "perseguidor",
+      "nombre": "Perseguidor",
+      "comportamiento": "persigue",
+      "salud": 4,
+      "danoContacto": 1,
+      "velocidad": 110,
+      "etiquetas": []
+    },
+    {
+      "id": "volador",
+      "nombre": "Volador",
+      "comportamiento": "vuela",
+      "salud": 3,
+      "danoContacto": 1,
+      "velocidad": 90,
+      "etiquetas": ["aereo"]
+    },
+    {
+      "id": "tirador",
+      "nombre": "Tirador",
+      "comportamiento": "dispara",
+      "salud": 3,
+      "danoContacto": 1,
+      "velocidad": 0,
+      "cadencia": 1.4,
+      "etiquetas": ["distancia"]
+    }
+  ]
+}

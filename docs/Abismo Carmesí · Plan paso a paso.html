@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Abismo Carmesí · Plan paso a paso</title>
+<style>
+:root{--bg:#f6f5f2;--fg:#1a1a1a;--dim:#6f6f68;--card:#fff;--line:#dcdad3;--blue:#1f6feb;--red:#c62828;--ok:#2a9d4a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121212;--fg:#eee;--dim:#9a9a94;--card:#1c1c1c;--line:#333;--blue:#4c9aff;--red:#ff6b6b;--ok:#4ccf75}}
+:root[data-theme="dark"]{--bg:#121212;--fg:#eee;--dim:#9a9a94;--card:#1c1c1c;--line:#333;--blue:#4c9aff;--red:#ff6b6b;--ok:#4ccf75}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+main{max-width:760px;margin:0 auto;padding:0 16px 40px}
+h1{font-size:22px;margin:16px 0 2px}h2{font-size:17px;margin:0}
+.sub{color:var(--dim);margin:0 0 12px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:8px 0;border-bottom:1px solid var(--line)}
+.track{height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+#fill{height:100%;width:0;background:var(--blue);transition:width .25s}
+.row{display:flex;justify-content:space-between;gap:8px;font-size:13px;margin-top:4px}
+#next{color:var(--dim);text-align:right}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:620px){.two{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+.card h3{margin:0 0 4px;font-size:14px}.card ul{margin:0;padding-left:18px;font-size:13.5px}.card li{margin:3px 0}
+.g h3{color:var(--ok)}.w h3{color:var(--red)}
+section{margin-top:22px}
+.ph{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:6px}
+.ph small{color:var(--dim)}
+ol{list-style:none;margin:0;padding:0}
+.s{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin-bottom:8px}
+.s label{display:flex;gap:8px;align-items:flex-start;cursor:pointer}
+.s input{margin-top:4px;width:18px;height:18px;flex:none;accent-color:var(--ok)}
+.n{color:var(--dim);font-variant-numeric:tabular-nums}
+.s.ok b{text-decoration:line-through;color:var(--dim)}
+details{margin:4px 0 0 26px}summary{cursor:pointer;color:var(--blue);font-size:13px}
+details p{margin:6px 0;font-size:14px}.hc{color:var(--dim)}
+button{padding:8px 14px;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:8px;cursor:pointer;font-size:13px}
+footer{margin-top:24px;display:flex;justify-content:space-between;gap:10px;align-items:center;color:var(--dim);font-size:12.5px}
+</style></head><body><main>
+<h1>Abismo Carmesí · Plan paso a paso</h1>
+<p class="sub">Desde el prototipo actual hasta el cierre del MVP y la migración. Marca cada paso al terminarlo.</p>
+<div class="bar"><div class="track"><div id="fill"></div></div><div class="row"><span id="cnt"></span><span id="next"></span></div></div>
+<div class="two">
+<div class="card g"><h3>✔ Ya funciona en el prototipo</h3><ul>
+<li>Plataformas: coyote 0,10 s, buffer 0,14 s, salto variable, caída más rápida y esquiva con invulnerabilidad</li>
+<li>3 armas, 10 objetos y 5 sinergias definidos en JSON</li>
+<li>Salas desde plantillas con espejo, estructuras modificadoras, puertas y semilla</li>
+<li>Salas del tesoro aparte y jefe final</li>
+<li>Muro y plataforma frágiles, barril explosivo y vasijas</li>
+<li>Datos, motor, dibujo y entrada ya separados por bloques</li></ul></div>
+<div class="card w"><h3>⚠ Falta respecto a los documentos</h3><ul>
+<li>Mapa fijo en el JSON: sin generador ni validador</li>
+<li>El Clavo es un proyectil corto: sin melee en 4 direcciones ni pogo; solo 3 enemigos</li>
+<li>En el tesoro se recogen todos los objetos, no se elige uno</li>
+<li>El catálogo de 10 objetos no coincide con el del dossier</li>
+<li>Sin pausa, resumen de run, telemetría, repositorio ni tests</li></ul></div></div>
+<div id="app"></div>
+<footer><span>Tu progreso se guarda en este navegador.</span><button id="rs">Reiniciar progreso</button></footer>
+</main>
+<script>
+const P=[["Cimientos","2–3 días"],["Movimiento","~1 semana"],["Combate","2 semanas"],["Generador de salas","3 semanas"],["Objetos y tesoro","3 semanas"],["Mundo y cierre","4 semanas"],["Migración a Unity","tras congelar el MVP"]];
+const S=[
+[0,"Congelar el MVP","Etiqueta el prototipo actual como v0.1 y copia la tabla MoSCoW del Anexo A en un BACKLOG.md. Toda idea nueva va ahí, no al código.","Existe la etiqueta v0.1 y un backlog; el alcance no cambia hasta cerrar la fase 5."],
+[0,"Sacar el prototipo a un repositorio","Hoy vive en un único HTML. Córtalo en data.json, core.js (motor), render.js, input.js e index.html: ya están separados por bloques. Sírvelo con Live Server o npx serve.","Corre en local igual que ahora, con commit inicial en main."],
+[0,"Probar el motor sin pantalla","El motor no usa el DOM, así que puede ejecutarse en Node con entradas simuladas y semilla fija. Escribe 3 tests: sala generada sin errores, un objeto cambia las estadísticas y el jugador cae y aterriza.","npm test pasa en verde y lo lanzas antes de cada commit."],
+[1,"Panel de ajuste en vivo","Sliders para coyote, buffer, fuerza de salto, gravedad y esquiva, leyendo y escribiendo el bloque player del JSON. Ajustar a ojo editando números es lento.","Puedes exportar un player.json con los valores que mejor se sienten."],
+[1,"Prueba de sensación con 3 personas","Cinco mini-retos: saltar justo al aterrizar, saltar al borde de una plataforma, salto corto frente a largo, esquivar y subir un pozo. Si el buffer de 0,14 s funciona, déjalo: el 0,10 s del GDD era orientativo.","Media de 4/5 o más en «el movimiento se siente bien»."],
+[2,"Ataque melee en cuatro direcciones con pogo","Hoy el Clavo es un proyectil corto con apuntado libre. Para acercarte a Hollow Knight, crea una hitbox melee a izquierda, derecha, arriba y abajo; golpear hacia abajo en el aire sobre un enemigo o pinchos rebota al jugador. Decide si las armas a distancia conservan el apuntado libre.","Encadenas pogos sobre una fila de pinchos sin recibir daño."],
+[2,"Perfil de arma completo","Añade al JSON los campos del GDD: tipo (cuerpo a cuerpo, distancia, pesada), retroceso y rompeEstructuras. Incluye un arma pesada y un bloque reforzado que solo ella rompe.","Las 3 armas se sienten distintas y añadir una cuarta es solo editar el JSON."],
+[2,"Cuatro enemigos distintos","Hoy hay un perseguidor, un volador que dispara y el jefe. Sepáralos en Patrullero (da la vuelta en los bordes), Perseguidor, Volador (sin disparar) y Tirador. Siguen siendo puntos rojos.","Un jugador nuevo distingue cada enemigo solo por cómo se mueve."],
+[3,"Generador de mapa con semilla","El mapa es una lista fija («SeI.», «.eeI», «IeeB»). Genera esa misma lista de cadenas: parte de S, crece a vecinos libres, coloca B en la celda más lejana y al menos 2 salas I. Como las puertas se abren hacia cualquier vecino ocupado, basta con que las celdas formen un conjunto conexo.","Misma semilla, mismo mapa; semilla distinta, mapa distinto."],
+[3,"Validador de alcanzabilidad","Con la física actual el salto llega a ≈3,6 casillas de alto y ≈4 de largo sin esquiva. Recorre cada sala con BFS usando esos límites; si una puerta o un objeto es inalcanzable, regenera con una semilla derivada.","1.000 semillas seguidas en el test sin ninguna sala bloqueada."],
+[3,"Biblioteca de salas","Hoy: 4 plantillas de combate, 1 de inicio, 1 de tesoro y 1 de jefe. Objetivo del dossier: 15 de combate, 3 de tesoro y 2 de inicio y fin. Cada plantilla son 11 filas de 16 caracteres y el espejo ya duplica las variantes. Un pequeño editor de cuadrícula para pintarlas acelera mucho.","15 o más plantillas de combate y la partida 5 ya no se parece a la 1."],
+[4,"Tesoro con elección","Hoy se recogen los 2 o 3 objetos de la sala. El GDD pide elegir: al coger uno, desaparecen los demás. Cada cofre pasa a ser una decisión.","Dos jugadores con la misma semilla pueden acabar con builds distintas."],
+[4,"Catálogo definitivo de objetos","El prototipo tiene 10 objetos pensados para disparos (Cuerno, Cafeína, Aguja…) y el dossier otros 10 para melee y movimiento (Botas ligeras, Alas de ceniza, Piedra sísmica…). Cuando el melee esté listo, elige un único catálogo con su tabla de sinergias.","Una sola tabla de 10 objetos, validada contra las armas reales."],
+[4,"Test de sinergias y topes","Para cada sinergia, aplica sus objetos y comprueba el resultado esperado. Pon topes a los multiplicadores: solo con Cafeína y Frenesí la cadencia ya sube ×1,69.","Ninguna combinación rompe el juego y cada sinergia se activa al reunir sus objetos."],
+[5,"Destructibles completos","Ya hay muro frágil, plataforma frágil, barril y vasija. Faltan pilar destructible y bloque reforzado. Añade salas con un atajo oculto tras un muro frágil (la estructura especial del GDD).","Hay al menos una ruta secreta por run y todas las estructuras de la tabla del GDD."],
+[5,"Pausa y pantalla de muerte","Hoy solo hay menú de inicio y un mensaje final. Añade pausa con Esc (continuar, opciones, menú), resumen con salas, objetos y tiempo, y reinicio rápido con R.","Pausas en cualquier momento y reinicias una run en menos de 3 segundos."],
+[5,"Telemetría y pruebas con 5–10 jugadores","Guarda al terminar cada run un JSON con duración, sala de muerte, objetos y sinergias. Pasa el juego a 5–10 personas sin ayudarlas y compara con los KPI del dossier.","Run de 10–20 min, ≥40 % terminan una run, ≥66 % descubren una sinergia y 0 errores bloqueantes."],
+[6,"Preparar el traspaso","Etiqueta v1.0, crea el proyecto Unity con las mismas carpetas y pasa primero data.json a ScriptableObjects y el núcleo a C#, con los mismos tests.","El núcleo en C# da los mismos resultados que el JS con la misma semilla."],
+[6,"Reconstruir presentación y controlador","Siguiendo el Anexo A: presentación con recursos de Unity, controlador del jugador con Input System ajustado hasta igualar el salto, y generador de salas con prefabs y la misma semilla.","Una run completa jugable en Unity con el mismo tacto del prototipo."]];
+const K='abismo-plan';let st={};
+try{st=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){st={}}
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}};
+const num=[];let html='';
+P.forEach((p,pi)=>{let k=0;html+='<section><div class="ph"><h2>Fase '+pi+' · '+p[0]+'</h2><small>'+p[1]+' · <span data-p="'+pi+'"></span></small></div><ol>';
+ S.forEach((s,i)=>{if(s[0]!=pi)return;k++;num[i]=pi+'.'+k;
+  html+='<li class="s" data-i="'+i+'"><label><input type="checkbox" data-i="'+i+'"><span class="n">'+num[i]+'</span><b>'+s[1]+'</b></label><details><summary>Cómo y cuándo está hecho</summary><p>'+s[2]+'</p><p class="hc"><b>Hecho cuando:</b> '+s[3]+'</p></details></li>'});
+ html+='</ol></section>'});
+document.getElementById('app').innerHTML=html;
+function upd(){let d=0;P.forEach((p,pi)=>{let a=0,b=0;S.forEach((s,i)=>{if(s[0]==pi){b++;if(st[i])a++}});
+  document.querySelector('[data-p="'+pi+'"]').textContent=a+'/'+b});
+ S.forEach((s,i)=>{const on=!!st[i];if(on)d++;const li=document.querySelector('li[data-i="'+i+'"]');li.classList.toggle('ok',on);li.querySelector('input').checked=on});
+ document.getElementById('fill').style.width=(d/S.length*100)+'%';
+ document.getElementById('cnt').textContent=d+' de '+S.length+' pasos';
+ const n=S.findIndex((s,i)=>!st[i]);
+ document.getElementById('next').textContent=n<0?'¡MVP cerrado!':'Siguiente: '+num[n]+' '+S[n][1]}
+document.getElementById('app').addEventListener('change',e=>{const i=e.target.dataset.i;if(i===undefined)return;st[i]=e.target.checked?1:0;save();upd()});
+const rs=document.getElementById('rs');let armed=0;
+rs.onclick=()=>{if(!armed){armed=1;rs.textContent='¿Seguro? Pulsa otra vez';setTimeout(()=>{armed=0;rs.textContent='Reiniciar progreso'},3000);return}
+ st={};save();upd();armed=0;rs.textContent='Reiniciar progreso'};
+upd();
+</script></body></html>

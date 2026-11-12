@@ -1,0 +1,19 @@
+{
+  "parametros": {
+    "ancho": 18,
+    "alto": 28,
+    "velocidadMaxima": 300,
+    "aceleracionSuelo": 2600,
+    "frenadoSuelo": 3200,
+    "aceleracionAire": 1800,
+    "frenadoAire": 900,
+    "gravedadSubida": 2000,
+    "gravedadCaida": 2600,
+    "velocidadMaximaCaida": 900,
+    "velocidadSalto": 680,
+    "corteSalto": 0.45,
+    "coyoteTime": 0.1,
+    "bufferSalto": 0.14,
+    "saltosMaximos": 1
+  }
+}

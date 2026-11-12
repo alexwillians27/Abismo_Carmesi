@@ -1,0 +1,14 @@
+{
+  "name": "abismo-carmesi",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Prototipo de Abismo Carmesí: plataformas roguelite sin arte, con la lógica de juego separada del motor.",
+  "scripts": {
+    "test": "node --test",
+    "serve": "node scripts/serve.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

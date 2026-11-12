@@ -1,0 +1,37 @@
+{
+  "armas": [
+    {
+      "id": "clavo",
+      "nombre": "Clavo",
+      "tipo": "cuerpo a cuerpo",
+      "dano": 1,
+      "cadencia": 0.28,
+      "alcance": 34,
+      "retroceso": 120,
+      "rompeEstructuras": 2,
+      "etiquetas": ["melee", "ofensivo"]
+    },
+    {
+      "id": "aguja",
+      "nombre": "Aguja de ceniza",
+      "tipo": "distancia",
+      "dano": 0.6,
+      "cadencia": 0.22,
+      "alcance": 260,
+      "retroceso": 40,
+      "rompeEstructuras": 1,
+      "etiquetas": ["proyectil", "ofensivo"]
+    },
+    {
+      "id": "martillo",
+      "nombre": "Martillo de escoria",
+      "tipo": "pesada",
+      "dano": 2.5,
+      "cadencia": 0.75,
+      "alcance": 44,
+      "retroceso": 300,
+      "rompeEstructuras": 4,
+      "etiquetas": ["melee", "destruccion"]
+    }
+  ]
+}
