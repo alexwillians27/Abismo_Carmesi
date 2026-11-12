@@ -2,6 +2,7 @@
   "parametros": {
     "ancho": 18,
     "alto": 28,
+    "saludMaxima": 5,
     "velocidadMaxima": 300,
     "aceleracionSuelo": 2600,
     "frenadoSuelo": 3200,
@@ -14,6 +15,9 @@
     "corteSalto": 0.45,
     "coyoteTime": 0.1,
     "bufferSalto": 0.14,
-    "saltosMaximos": 1
+    "saltosMaximos": 1,
+    "rebotePogo": 480,
+    "invulnerabilidad": 0.8,
+    "retrocesoRecibido": 220
   }
 }

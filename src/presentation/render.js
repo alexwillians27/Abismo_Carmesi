@@ -1,6 +1,8 @@
 // Capa de presentación: en el prototipo es un canvas 2D; en Unity serían sprites
 // sin cambiar nada del núcleo.
 
+import { cajaDeAtaque } from '../core/combat.js';
+
 const COLORES = {
   fondo: '#0b0b0f',
   margen: '#2b2b38',
@@ -9,8 +11,14 @@ const COLORES = {
   borde: '#33334a',
   puerta: '#d8a24a',
   enemigo: '#e04a4a',
+  enemigoGolpeado: '#ffd2d2',
   heroe: '#4a94ff',
   halo: 'rgba(74, 148, 255, 0.18)',
+  golpe: 'rgba(232, 232, 238, 0.22)',
+  proyectilJugador: '#cfe4ff',
+  proyectilEnemigo: '#ff9a5a',
+  vidaLlena: '#e0574a',
+  vidaVacia: '#2a2a35',
   hudFondo: 'rgba(10, 10, 14, 0.72)',
   hudTexto: '#c9c9d6',
   hudTenue: '#8a8a99'
@@ -46,9 +54,17 @@ export function crearRenderizador(canvas) {
     else if (puerta.lado === 'abajo') ctx.fillRect(puerta.x, puerta.y + tileSize - grosor, tileSize, grosor);
   }
 
+  function dibujarVida(jugador, x, y) {
+    const tamano = 9;
+    for (let indice = 0; indice < jugador.saludMaxima; indice++) {
+      ctx.fillStyle = indice < jugador.salud ? COLORES.vidaLlena : COLORES.vidaVacia;
+      ctx.fillRect(x + indice * (tamano + 4), y, tamano, tamano);
+    }
+  }
+
   return {
     dibujar(juego) {
-      const { mundo, jugador, arma, objetos, sinergias } = juego;
+      const { mundo, jugador, arma, objetos, sinergias, enemigos, proyectiles, ataque } = juego;
       preparar(mundo);
 
       ctx.clearRect(0, 0, mundo.anchoPx, mundo.altoPx);
@@ -69,18 +85,43 @@ export function crearRenderizador(canvas) {
 
       for (const puerta of mundo.puertas) dibujarPuerta(puerta, mundo.tileSize);
 
-      // Enemigos: puntos rojos.
-      for (const enemigo of mundo.enemigos) circulo(enemigo.x, enemigo.y, 6, COLORES.enemigo);
+      // Golpe activo: solo el área, sin animación.
+      if (ataque && ataque.forma === 'melee') {
+        const caja = cajaDeAtaque(jugador, arma, ataque.direccion);
+        ctx.fillStyle = COLORES.golpe;
+        ctx.fillRect(caja.x, caja.y, caja.w, caja.h);
+      }
 
-      // Héroe: punto azul.
+      // Enemigos vivos: puntos rojos que se aclaran al ser golpeados.
+      for (const enemigo of enemigos) {
+        if (!enemigo.vivo) continue;
+        const centroX = enemigo.caja.x + enemigo.caja.w / 2;
+        const centroY = enemigo.caja.y + enemigo.caja.h / 2;
+        const radio = Math.min(enemigo.caja.w, enemigo.caja.h) / 2;
+        circulo(centroX, centroY, radio, enemigo.golpeado > 0 ? COLORES.enemigoGolpeado : COLORES.enemigo);
+      }
+
+      for (const proyectil of proyectiles) {
+        circulo(
+          proyectil.x,
+          proyectil.y,
+          proyectil.radio,
+          proyectil.origen === 'jugador' ? COLORES.proyectilJugador : COLORES.proyectilEnemigo
+        );
+      }
+
+      // Héroe: punto azul; parpadea mientras es invulnerable.
       const centroX = jugador.caja.x + jugador.caja.w / 2;
       const centroY = jugador.caja.y + jugador.caja.h / 2;
-      circulo(centroX, centroY, 16, COLORES.halo);
-      circulo(centroX, centroY, 7, COLORES.heroe);
+      if (jugador.invulnerable <= 0 || Math.floor(juego.reloj * 20) % 2 === 0) {
+        circulo(centroX, centroY, 16, COLORES.halo);
+        circulo(centroX, centroY, 7, COLORES.heroe);
+      }
 
-      // HUD mínimo: arma y build.
+      // HUD mínimo: vida, arma y build.
+      const restantes = enemigos.filter((enemigo) => enemigo.vivo).length;
       ctx.fillStyle = COLORES.hudFondo;
-      ctx.fillRect(8, 8, 244, 46);
+      ctx.fillRect(8, 8, 300, 64);
       ctx.font = '12px system-ui, sans-serif';
       ctx.fillStyle = COLORES.hudTexto;
       ctx.fillText(
@@ -88,8 +129,13 @@ export function crearRenderizador(canvas) {
         16,
         25
       );
+      dibujarVida(jugador, 16, 33);
       ctx.fillStyle = COLORES.hudTenue;
-      ctx.fillText(`objetos ${objetos.length} · sinergias ${sinergias.length}`, 16, 43);
+      ctx.fillText(
+        `objetos ${objetos.length} · sinergias ${sinergias.length} · enemigos ${restantes}`,
+        16,
+        62
+      );
     }
   };
 }

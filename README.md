@@ -4,7 +4,9 @@ Juego 2D de plataformas con estructura roguelite, inspirado en **Hollow Knight**
 
 ## Estado
 
-Fase 0 (cimientos) completada. El prototipo ya está separado en datos, núcleo, servicios y presentación, y el motor se puede probar sin pantalla. Sin arte: héroe = punto azul, enemigos = puntos rojos, escenario = líneas de margen.
+Fases 0 (cimientos) y 2 (combate) completadas. El prototipo está separado en datos, núcleo, servicios y presentación, y el motor se prueba sin pantalla. Hay golpe en cuatro direcciones con pogo, tres armas y los cuatro enemigos del GDD. Sin arte: héroe = punto azul, enemigos = puntos rojos, escenario = líneas de margen.
+
+La **Fase 1** queda pendiente: los parámetros del salto ya viven en `data/player.json`, pero falta el panel de ajuste en vivo y la prueba de sensación con tres personas.
 
 ## Cómo ejecutarlo
 
@@ -14,7 +16,7 @@ npm run serve      # http://localhost:5173
 
 Hace falta servirlo por HTTP: los módulos ES y `fetch` no funcionan abriendo el archivo con `file://`. También vale `npx serve` o la extensión Live Server.
 
-Controles: **← →** mover, **Espacio** saltar, **Esc** volver al menú.
+Controles: **← →** mover, **Espacio/W** saltar, **J/X** atacar, **↑ ↓** apuntar el golpe (arriba o abajo; sin dirección, golpea hacia donde mira), **Esc** volver al menú.
 
 ## Cómo probarlo
 
@@ -28,15 +30,16 @@ Ejecuta el motor en Node con entradas simuladas y semilla fija, sin navegador ni
 
 ```
 ├── index.html              Página del prototipo (menú, canvas y HUD)
-├── data/                   Datos externos; ajustar aquí no requiere tocar código
-│   ├── player.json         Parámetros del héroe: gravedad, salto, coyote, buffer…
-│   ├── weapons.json        Las 3 armas con perfil de datos
+├── data/                   Datos externos; ajustar aquí no requiere tocar código│   ├── player.json         Gravedad, salto, coyote, vida, invulnerabilidad, pogo…
+│   ├── weapons.json        Las 3 armas: forma, daño, cadencia, alcance, retroceso
 │   ├── items.json          Los 10 objetos y sus sinergias
-│   ├── enemies.json        Los 4 enemigos del prototipo
+│   ├── enemies.json        Los 4 enemigos: salud, tamaño y comportamiento
 │   └── rooms.json          Salas predefinidas en cuadrícula de 16 × 11
 ├── src/
 │   ├── core/               Núcleo puro: reglas, física, objetos, generación. Sin DOM
+│   │   ├── combat.js       Golpe en 4 direcciones, pogo, daño y proyectiles
 │   │   ├── datos.js        Indexa los JSON por id
+│   │   ├── enemies.js      Los cuatro comportamientos de enemigo
 │   │   ├── game.js         Estado de la run y recálculo de estadísticas
 │   │   ├── items.js        Modificadores y sinergias
 │   │   ├── physics.js      Colisiones AABB por ejes separados
@@ -68,7 +71,7 @@ Los nombres de campos de los JSON van sin tildes (`dano`, `danoAterrizaje`) para
 
 ## Siguiente paso
 
-Fase 1: panel de ajuste del salto en vivo y prueba de sensación con tres personas. Ver `docs/plan_fases.md` y el plan interactivo en `docs/Abismo Carmesí · Plan paso a paso.html`.
+Fase 3: generador de salas con semilla y validador de alcanzabilidad. Ver `docs/plan_fases.md` y el plan interactivo en `docs/Abismo Carmesí · Plan paso a paso.html`.
 
 ## Contenido de la carpeta
 

@@ -52,7 +52,7 @@ function jugar(armaId) {
   entrada?.destruir();
   entrada = crearEntrada();
   menu.hidden = true;
-  estado.textContent = `Run con ${juego.arma.nombre}.`;
+  estado.textContent = `Run con ${juego.arma.nombre} · J/X atacar, ↑ ↓ apuntar el golpe.`;
 
   ultimoTiempo = performance.now();
   if (animacion !== null) cancelAnimationFrame(animacion);
@@ -65,6 +65,13 @@ function bucle(tiempo) {
 
   actualizarJuego(juego, dt, entrada.leer());
   renderizador.dibujar(juego);
+
+  if (juego.terminado) {
+    const derrotados = juego.enemigosDerrotados;
+    volverAlMenu();
+    estado.textContent = `Has caído · enemigos derrotados: ${derrotados}. Elige un arma para reintentar.`;
+    return;
+  }
 
   animacion = requestAnimationFrame(bucle);
 }

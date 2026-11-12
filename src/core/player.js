@@ -5,6 +5,10 @@ export function crearJugador(spawn, parametros) {
   return {
     caja: { x: spawn.x - ancho / 2, y: spawn.y - alto, w: ancho, h: alto },
     velocidad: { x: 0, y: 0 },
+    salud: parametros.saludMaxima ?? 5,
+    saludMaxima: parametros.saludMaxima ?? 5,
+    invulnerable: 0,
+    cooldownAtaque: 0,
     enSuelo: false,
     coyote: 0,
     bufferSalto: 0,
@@ -22,6 +26,8 @@ export function actualizarJugador(jugador, entrada, dt, parametros, solidos, lim
   const eje = Math.max(-1, Math.min(1, Number(entrada?.ejeX ?? 0)));
   const saltoPulsado = Boolean(entrada?.saltoPulsado);
   const saltoMantenido = Boolean(entrada?.saltoMantenido);
+
+  jugador.invulnerable = Math.max(0, jugador.invulnerable - dt);
 
   // Coyote time: margen para saltar justo después de dejar una plataforma.
   jugador.coyote = jugador.enSuelo ? parametros.coyoteTime : Math.max(0, jugador.coyote - dt);

@@ -45,3 +45,11 @@ Método MoSCoW copiado de la tabla del Anexo A, apartado 9.
 - [x] MVP congelado (este archivo) y etiqueta `v0.1`
 - [x] Prototipo separado en `data/`, `src/core`, `src/services`, `src/presentation` e `index.html`
 - [x] Motor ejecutable sin pantalla con `npm test`
+
+## Estado de la Fase 2 · Combate
+
+- [x] Golpe en cuatro direcciones con hitbox, cadencia, retroceso y pogo
+- [x] Las 3 armas se comportan distinto y se configuran desde el JSON
+- [x] Patrullero, perseguidor, volador y tirador con comportamientos separados
+- [x] Salud discreta, daño por contacto y por proyectil, invulnerabilidad
+- [ ] Pantalla de muerte con resumen de la run (es de la Fase 5; ahora solo se avisa en el texto bajo el canvas)

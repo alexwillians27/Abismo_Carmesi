@@ -7,6 +7,8 @@
       "salud": 3,
       "danoContacto": 1,
       "velocidad": 70,
+      "ancho": 20,
+      "alto": 20,
       "etiquetas": []
     },
     {
@@ -16,6 +18,9 @@
       "salud": 4,
       "danoContacto": 1,
       "velocidad": 110,
+      "detecta": 260,
+      "ancho": 20,
+      "alto": 20,
       "etiquetas": []
     },
     {
@@ -24,7 +29,12 @@
       "comportamiento": "vuela",
       "salud": 3,
       "danoContacto": 1,
-      "velocidad": 90,
+      "velocidad": 0,
+      "amplitud": 22,
+      "amplitudX": 34,
+      "frecuencia": 1.8,
+      "ancho": 16,
+      "alto": 16,
       "etiquetas": ["aereo"]
     },
     {
@@ -35,6 +45,11 @@
       "danoContacto": 1,
       "velocidad": 0,
       "cadencia": 1.4,
+      "alcanceDisparo": 320,
+      "velocidadProyectil": 240,
+      "danoProyectil": 1,
+      "ancho": 20,
+      "alto": 20,
       "etiquetas": ["distancia"]
     }
   ]
